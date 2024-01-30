@@ -1,5 +1,6 @@
 # Name: 
 # Program: SnakeClone
+from cmath import rect
 import time
 import random
 import pygame
@@ -44,7 +45,7 @@ def main():
     DISPLAY_SURF = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     BASIC_FONT = pygame.font.Font('freesansbold.ttf', 18)
     pygame.display.set_caption("sNaKe_ClOnE")
-    showStartScreen()  # Not yet defined
+    showStartScreen() # Not yet defined
     while True:
         runGame()  # Not yet defined
         showGameOverScreen()  # Not yet defined
@@ -52,6 +53,7 @@ def main():
 
 def showStartScreen():
     print("Start the Snake Game!!!")
+
 
  
 def drawGrid():
@@ -81,6 +83,15 @@ def drawSnake(snakeCoords):
         pygame.draw.rect(DISPLAY_SURF, GREEN, snakeBodySeg)
         snakeBodySeg = pygame.Rect(segment[X]*CELL_SIZE+2, segment[Y]*CELL_SIZE+2, CELL_SIZE-4, CELL_SIZE-4)
         pygame.draw.rect(DISPLAY_SURF, DARKGREEN, snakeBodySeg)
+
+
+def drawscore(score):
+    scoreSurf = BASIC_FONT.render(str(score), True, WHITE)
+    scoreRect = scoreSurf.get_rect()
+    scoreRect.topleft = (0,0)
+    DISPLAY_SURF.blit(scoreSurf, scoreRect)
+    goFont = pygame.font.Font('freesansbold.ttf', 100)
+    scoreText = BASIC_FONT.render("Score", True, GREEN)
 
 
 def showGameOverScreen():
@@ -121,7 +132,7 @@ def runGame():
     snakeCoords = [(startX, startY)]
     direction = random.choice([RIGHT, LEFT, UP, DOWN])
     apple = getRandomLocation(snakeCoords)  # to be implemented
-    
+    score = 0
     # Event handling loop
     while True: 
         ## CHECK FOR USER INPUT ##
@@ -165,6 +176,7 @@ def runGame():
         
         if snakeCoords[HEAD] == apple:
             apple = getRandomLocation(snakeCoords)
+            score += 1
         else:
             snakeCoords.pop()
         ## ~~~~~End of Logic Section~~~ ##
@@ -175,6 +187,7 @@ def runGame():
         drawGrid()
         drawSnake(snakeCoords)
         drawApple(apple)
+        drawscore(score)
         # drawScore 
         
         pygame.display.update()
